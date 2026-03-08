@@ -34,6 +34,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		roleRoutes.POST("/create", roleHandler.CreateRole)
 		roleRoutes.GET("/:id", roleHandler.GetRoleByID)
 		roleRoutes.PUT("/:id", roleHandler.UpdateRole)
+		roleRoutes.DELETE("/:id", roleHandler.DeleteRole)
 	}
 
 	return r
