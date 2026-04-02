@@ -10,11 +10,11 @@ import (
 
 func SetupRouter(db *gorm.DB) *gin.Engine {
 	userRepo := repository.NewUserRepository(db)
-	userService := service.NewUserService(userRepo)
+	roleRepo := repository.NewRoleRepository(db)
+	userService := service.NewUserService(userRepo, roleRepo)
 	userHandler := handler.NewUserHandler(userService)
 
 	// role
-	roleRepo := repository.NewRoleRepository(db)
 	roleService := service.NewRoleService(roleRepo)
 	roleHandler := handler.NewRoleHandler(roleService)
 	r := gin.Default()
