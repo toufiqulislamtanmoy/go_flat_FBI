@@ -12,6 +12,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	userRepo := repository.NewUserRepository(db)
 	roleRepo := repository.NewRoleRepository(db)
 	planRepo := repository.NewPlanRepository(db)
+	permissionRepo := repository.NewPermissionsRepository(db)
 
 	userService := service.NewUserService(userRepo, roleRepo)
 	userHandler := handler.NewUserHandler(userService)
@@ -22,6 +23,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// plan
 	planService := service.NewPlanService(planRepo)
 	planHandler := handler.NewPlanHandler(planService)
+	// permission
+	permissionService := service.NewPermissionService(permissionRepo)
+	permissionHandler := handler.NewPermissionHandler(permissionService)
 	r := gin.Default()
 
 	userRoutes := r.Group("/users")
@@ -48,6 +52,14 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		planRoutes.GET("/:id", planHandler.GetPlanByID)
 		planRoutes.PUT("/:id", planHandler.UpdateRole)
 		planRoutes.DELETE("/:id", planHandler.DeleteRole)
+	}
+	permissionRoutes := r.Group("/permissions")
+	{
+		permissionRoutes.GET("/", permissionHandler.GetAllRole)
+		permissionRoutes.POST("/create", permissionHandler.CreatePlan)
+		permissionRoutes.GET("/:id", permissionHandler.GetPlanByID)
+		permissionRoutes.PUT("/:id", permissionHandler.UpdateRole)
+		permissionRoutes.DELETE("/:id", permissionHandler.DeleteRole)
 	}
 
 	return r
